@@ -43,39 +43,77 @@ namespace Mln.Controller
         public Question GetRandomQuestion()
         {
             Random random = new();
-            int index = random.Next(questions.Length - 1);
-            Console.WriteLine($"{questions[index].question}\t~~~~~Current user: {user.nickname}\n" +
-                              $" 1. {questions[index].answers[0]}\n"+
-                              $" 2. {questions[index].answers[1]}\n"+
-                              $" 3. {questions[index].answers[2]}\n"+
-                              $" 4. {questions[index].answers[3]}\n");
+            int indexQ = 0;
+            int indexA = 0;
+            string[] new_questions = new string[questions.Length];
+            int[] previousNumbers = new int[questions.Length - 1];
+            
+            for (int i = 0; i < questions.Length; i++)
+            {
+                do
+                {
+                    indexA = random.Next(questions.Length - 1);
+                    new_questions[i] = questions[indexA];
+                } while (previousNumbers.IndexOf(indexA) != -1);
 
+                previousNumbers[i] = indexA;
+            }
+            do
+            {
+                indexQ = random.Next(questions.Length - 1);
+            } while (questions[indexQ].hasAsked == true);
+
+            Console.WriteLine($"{questions[indexQ].question}\t~~~~~Current user: {user.nickname}\n" +
+                             $" 1. {questions[indexQ].answers[0]}\n" +
+                             $" 2. {questions[indexQ].answers[1]}\n" +
+                             $" 3. {questions[indexQ].answers[2]}\n" +
+                             $" 4. {questions[indexQ].answers[3]}\n");
+
+            questions[index].hasAsked = true;
             return questions[index];
         }
 
-        public void CheckAnswer(Question question, string input)
+        public bool CheckUserInput(int input)
         {
-            
-            int.TryParse(input, out int answer);
-            if (question.rightAnswer == answer)
+            return (input <= 4 && input > 0) ? true : false;
+        }
+
+        public void CheckAnswer(Question question)
+        {
+            int answer = 0;
+            do
             {
-                user.points++;
-                Console.Clear();
-                Console.WriteLine($"Right!\n" +
-                                  $"Current points: {user.points}");
-            }
-            else
-            {
-                user.lives--;
-                Console.Clear();
-                Console.WriteLine("Wrong!");
-                if (user.lives == 0 )
+                string userInput = Console.ReadLine();
+                int.TryParse(userInput, out answer);
+
+                if (CheckUserInput(answer))
                 {
-                    Console.Clear();
-                    Console.WriteLine("You lose!");
+                    if (question.rightAnswer == answer)
+                    {
+                        user.points++;
+                        Console.WriteLine($"Right!\n" +
+                                          $"Current points: {user.points}");
+                    }
+                    else
+                    {
+                        user.lives--;
+                        Console.WriteLine("Wrong!");
+                        if (user.lives == 0)
+                        {
+                            Console.WriteLine("You lose!");
+                            Console.ReadLine();
+                        }
+                    }
                 }
-            }
-               
+                else
+                    Console.WriteLine("Invalid input. Choose between 1 and 4.");
+            } while (!CheckUserInput(answer));
+            
+        }
+
+        public void ShowHistory()
+        {
+            Console.WriteLine(this.user.points);
         }
     }
 }
