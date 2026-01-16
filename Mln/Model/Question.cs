@@ -9,7 +9,7 @@ namespace Mln.Model
         public string question;
         public string[][] answers;
         public bool hasAsked = false;
-        
+        public bool answeredCorrectly;
        
 
        
