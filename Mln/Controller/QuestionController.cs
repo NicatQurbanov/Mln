@@ -10,7 +10,8 @@ namespace Mln.Controller
     {
         public Question[] questions;
         public User user;
-
+        public string[] questionsHistory;
+        
         public QuestionController(User user) 
         {
             questions = new Question[1];
@@ -39,7 +40,44 @@ namespace Mln.Controller
         //    questions[questions.Length - 1] = question;
         //    Array.Resize(ref questions, questions.Length + 1);
         //}
+          public void ProcessQuestionData(string? new_questionRead, string? new_answerRead, string? new_rightAnswerRead)
+  {
 
+      Console.WriteLine("Enter question:");
+      new_questionRead = Console.ReadLine();
+      
+      Console.WriteLine("Enter answers separated by comma (,)");
+      new_answerRead = Console.ReadLine();
+
+      Console.WriteLine("Enter an index of the right answer:");
+      new_rightAnswerRead = Console.ReadLine();
+
+      if (new_questionRead != null && new_answerRead != null && new_rightAnswerRead != null)
+      {
+          if (Regex.IsMatch(new_questionRead, "^[A-Z][^?]*\\?$"))
+          {
+
+          }
+          string[] allAnswers = new_answerRead.Split(",");
+          string[][] new_answer = new string[[
+              "",
+              "",
+              "",
+              "",
+              ],
+              [""]];
+
+          for(int i = 0; i < new_answer[0].Length; i++)
+          {
+              new_answer[0][i] = allAnswers[i];
+          }
+
+          int.TryParse(new_rightAnswerRead, out int rightIndex);
+          new_answer[0][0] = new_answerRead[0][rightIndex];
+      }
+  }
+
+        
         public Question GetRandomQuestion()
         {
             Random random = new();
@@ -47,9 +85,9 @@ namespace Mln.Controller
             int indexA = 0;
             int index = 0;
             string[] new_questions = new string[questions.Length];
-            int[] previousNumbers = new int[4];
+            int[] previousNumbers = new int[questions.Length - 1];
             bool allAsked = true;
-            
+           
             
             do
             {
@@ -104,6 +142,10 @@ namespace Mln.Controller
         //public void CheckAnswer(Question question)
         //{
         //    int answer = 0;
+        //    int index = 0;
+        //    questionsHistory = new string[questions.Length];
+        //    SetTimer();
+        //    do {
         //    do
         //    {
         //        string userInput = Console.ReadLine();
@@ -114,6 +156,7 @@ namespace Mln.Controller
         //            if (question.answers[1][0] == answer)
         //            {
         //                user.points++;
+        //                question.answeredCorrectly = true;
         //                Console.WriteLine($"Right!\n" +
         //                                  $"Current points: {user.points}");
         //            }
@@ -127,16 +170,26 @@ namespace Mln.Controller
         //                    Console.ReadLine();
         //                }
         //            }
+        //            questionHistory[index] = question;
+        //            index++;
         //        }
         //        else
         //            Console.WriteLine("Invalid input. Choose between 1 and 4.");
         //    } while (!CheckUserInput(answer));
-            
+        // } while (TimernotElapsed);   
         //}
 
         public void ShowHistory()
         {
-            Console.WriteLine(this.user.points);
+            foreach(Question question in questionsHistory)
+            {
+              Console.WriteLine(question.queston);
+                if (question.answeredCorrectly)
+                    Console.WriteLine("right);
+                else
+                    Console.WriteLine("wrong");
+            }
+            
         }
     }
 }
