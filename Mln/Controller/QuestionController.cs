@@ -52,39 +52,44 @@ namespace Mln.Controller
             Array.Resize(ref questions, questions.Length + 1);
         }
 
-      Console.WriteLine("Enter question:");
-      new_questionRead = Console.ReadLine();
-      
-      Console.WriteLine("Enter answers separated by comma (,)");
-      new_answerRead = Console.ReadLine();
+        public void ProcessQuestionData(string new_questionRead, string new_answerRead, string new_rightAnswerRead)
+        {
+            Console.WriteLine("Enter question:");
+            new_questionRead = Console.ReadLine();
 
-      Console.WriteLine("Enter an index of the right answer:");
-      new_rightAnswerRead = Console.ReadLine();
+            Console.WriteLine("Enter answers separated by comma (,)");
+            new_answerRead = Console.ReadLine();
 
-      if (new_questionRead != null && new_answerRead != null && new_rightAnswerRead != null)
-      {
-          if (Regex.IsMatch(new_questionRead, "^[A-Z][^?]*\\?$"))
-          {
+            Console.WriteLine("Enter an index of the right answer:");
+            new_rightAnswerRead = Console.ReadLine();
 
-          }
-          string[] allAnswers = new_answerRead.Split(",");
-          string[][] new_answer = new string[[
-              "",
+            if (new_questionRead != null && new_answerRead != null && new_rightAnswerRead != null)
+            {
+                if (Regex.IsMatch(new_questionRead, "^[A-Z][^?]*\\?$"))
+                {
+
+                }
+                string[] allAnswers = new_answerRead.Split(",");
+                string[][] new_answer = new string[[
+                    "",
               "",
               "",
               "",
               ],
-              [""]];
+                    [""]];
 
-          for(int i = 0; i < new_answer[0].Length; i++)
-          {
-              new_answer[0][i] = allAnswers[i];
-          }
+                for (int i = 0; i < new_answer[0].Length; i++)
+                {
+                    new_answer[0][i] = allAnswers[i];
+                }
 
-          int.TryParse(new_rightAnswerRead, out int rightIndex);
-          new_answer[0][0] = new_answerRead[0][rightIndex];
-      }
-  }
+                int.TryParse(new_rightAnswerRead, out int rightIndex);
+                new_answer[0][0] = new_answerRead[0][rightIndex];
+            }
+        }
+        }
+
+     
 
         
         public Question GetRandomQuestion()
@@ -194,7 +199,7 @@ namespace Mln.Controller
             {
               Console.WriteLine(question.queston);
                 if (question.answeredCorrectly)
-                    Console.WriteLine("right);
+                    Console.WriteLine("right");
                 else
                     Console.WriteLine("wrong");
             }
