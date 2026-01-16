@@ -34,11 +34,22 @@ namespace Mln.Controller
             Array.Resize(ref questions, questions.Length + 1);
         }
 
-        //public void AddQuestion(string input)
-        //{
-        //    questions[questions.Length - 1] = question;
-        //    Array.Resize(ref questions, questions.Length + 1);
-        //}
+        public void ProcessQuestionData()
+        {
+
+            Console.WriteLine("Enter question:");
+            string? new_question = Console.ReadLine();
+            
+            Console.WriteLine("Enter answers separated by comma (,)");
+            string? new_answer = Console.ReadLine();
+        }
+
+        public void AddQuestion(string input)
+        {
+
+            questions[questions.Length - 1] = question;
+            Array.Resize(ref questions, questions.Length + 1);
+        }
 
         public Question GetRandomQuestion()
         {
@@ -115,5 +126,6 @@ namespace Mln.Controller
         {
             Console.WriteLine(this.user.points);
         }
+
     }
 }
