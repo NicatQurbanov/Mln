@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace Mln.Controller
@@ -45,12 +46,12 @@ namespace Mln.Controller
             string? new_answer = Console.ReadLine();
         }
 
-        public void AddQuestion(string input)
-        {
+        //public void AddQuestion(string input)
+        //{
 
-            questions[questions.Length - 1] = question;
-            Array.Resize(ref questions, questions.Length + 1);
-        }
+        //    questions[questions.Length - 1] = question;
+        //    Array.Resize(ref questions, questions.Length + 1);
+        //}
 
         public void ProcessQuestionData(string new_questionRead, string new_answerRead, string new_rightAnswerRead)
         {
@@ -70,24 +71,18 @@ namespace Mln.Controller
 
                 }
                 string[] allAnswers = new_answerRead.Split(",");
-                string[][] new_answer = new string[[
-                    "",
-              "",
-              "",
-              "",
-              ],
-                    [""]];
+                string[][] new_answer = new string[4][1];
 
                 for (int i = 0; i < new_answer[0].Length; i++)
                 {
                     new_answer[0][i] = allAnswers[i];
                 }
-
-                int.TryParse(new_rightAnswerRead, out int rightIndex);
+                int rightIndex;
+                int.TryParse(new_rightAnswerRead, out rightIndex);
                 new_answer[0][0] = new_answerRead[0][rightIndex];
             }
         }
-        }
+        
 
      
 
@@ -153,55 +148,58 @@ namespace Mln.Controller
             return (input <= 4 && input > 0) ? true : false;
         }
 
-        //public void CheckAnswer(Question question)
-        //{
-        //    int answer = 0;
-        //    int index = 0;
-        //    questionsHistory = new string[questions.Length];
-        //    SetTimer();
-        //    do {
-        //    do
-        //    {
-        //        string userInput = Console.ReadLine();
-        //        int.TryParse(userInput, out answer);
+        public void CheckAnswer(Question question)
+        {
+            int answer = 0;
+            int index = 0;
+            questionsHistory = new string[questions.Length];
+            SetTimer();
+            do
+            {
+                do
+                {
+                    string userInput = Console.ReadLine();
+                    int.TryParse(userInput, out answer);
 
-        //        if (CheckUserInput(answer))
-        //        {
-        //            if (question.answers[1][0] == answer)
-        //            {
-        //                user.points++;
-        //                question.answeredCorrectly = true;
-        //                Console.WriteLine($"Right!\n" +
-        //                                  $"Current points: {user.points}");
-        //            }
-        //            else
-        //            {
-        //                user.lives--;
-        //                Console.WriteLine("Wrong!");
-        //                if (user.lives == 0)
-        //                {
-        //                    Console.WriteLine("You lose!");
-        //                    Console.ReadLine();
-        //                }
-        //            }
-        //            questionHistory[index] = question;
-        //            index++;
-        //        }
-        //        else
-        //            Console.WriteLine("Invalid input. Choose between 1 and 4.");
-        //    } while (!CheckUserInput(answer));
-        // } while (TimernotElapsed);   
-        //}
+                    if (CheckUserInput(answer))
+                    {
+                        if (question.answers[1][0] == answer)
+                        {
+                            user.points++;
+                            question.answeredCorrectly = true;
+                            Console.WriteLine($"Right!\n" +
+                                              $"Current points: {user.points}");
+                        }
+                        else
+                        {
+                            user.lives--;
+                            Console.WriteLine("Wrong!");
+                            if (user.lives == 0)
+                            {
+                                Console.WriteLine("You lose!");
+                                Console.ReadLine();
+                            }
+                        }
+                        questionHistory[index] = question.question;
+                        index++;
+                    }
+                    else
+                        Console.WriteLine("Invalid input. Choose between 1 and 4.");
+                } while (!CheckUserInput(answer));
+            } while (TimernotElapsed);
+        }
 
         public void ShowHistory()
         {
-            foreach(Question question in questionsHistory)
+            foreach(Question question in questions)
             {
-              Console.WriteLine(question.queston);
-                if (question.answeredCorrectly)
-                    Console.WriteLine("right");
-                else
-                    Console.WriteLine("wrong");
+                if (question.hasAsked == true)
+                {
+                    if (question.answeredCorrectly == true)
+                        Console.WriteLine("right");
+                    else
+                        Console.WriteLine("wrong");
+                }
             }
             
         }

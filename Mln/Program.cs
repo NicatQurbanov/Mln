@@ -82,7 +82,7 @@ namespace Mln
                                "Rendering performance",
                                "DOM parsing"],["Execution order of asynchronous tasks"]];
 
-
+            
             string question9Q = "Why is JavaScript considered a dynamically typed language?";
             string[][] question9A = [["Types are enforced at compile time",
                                 "Variables can change type at runtime",
